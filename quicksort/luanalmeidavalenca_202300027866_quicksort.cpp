@@ -139,6 +139,34 @@ void quicksortHoareRandom(int arr[], int low, int high, int &trocas, int &chamad
     }
 }
 
+// usa insertion sort para ordenar os resultados
+void sortResultados(Resultado arr[], int n) {
+    for (int i = 1; i < n; ++i) {
+        Resultado key = arr[i];
+        int j = i - 1;
+        while (j >= 0) {
+            if (arr[j].trocas > key.trocas) {
+                arr[j+1] = arr[j];
+                --j;
+            } else if (arr[j].trocas < key.trocas) {
+                break;
+            } else {
+                if (arr[j].chamadas > key.chamadas) {
+                    arr[j+1] = arr[j];
+                    --j;
+                } else if (arr[j].chamadas < key.chamadas) {
+                    break;
+                } else {
+                    if (strcmp(arr[j].nome, key.nome) > 0) {
+                        arr[j+1] = arr[j];
+                        --j;
+                    } else break;
+                }
+            }
+        }
+        arr[j+1] = key;
+    }
+}
 
 int main(int argc, char* argv[]) {
     ifstream input(argv[1]);
@@ -180,6 +208,8 @@ int main(int argc, char* argv[]) {
 
             delete[] copia;
         }
+
+        sortResultados(resultados, 6);
 
         output << "[" << N << "]:";
         for (int i = 0; i < 6; i++) {
